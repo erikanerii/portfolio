@@ -1,9 +1,5 @@
 // ---- Gallery (edit titles here; images live in the "fun web" folder) ----
-<<<<<<< HEAD
 var IMG_DIRS=['portfolio images/fun web/','fun web/','images/fun web/'];
-=======
-var IMG_DIRS=['portfolio images/fun web/','fun web/'];
->>>>>>> 3c75e5a41ead32dd76eae8e85acddc04e6db5a53
 var SETS=[
  {cat:'Graphics',label:'Graphic',names:['graphicOne','graphicTwo','graphicThree','graphicFour','graphicFive']},
  {cat:'Photography',label:'Photo',names:['photoOne','photoTwo','photoThree','photoFour','photoFive']},
@@ -12,16 +8,11 @@ var SETS=[
 var COLS=[['#e040fb','#ff9f1c'],['#6f4e37','#c8a27a'],['#00b4d8','#5b3df5'],['#ff4d6d','#ff9f1c'],['#2ec27e','#00b4d8']];
 var G=[];
 SETS.forEach(function(s){s.names.forEach(function(n,i){G.push({t:s.label+' 0'+(i+1),cat:s.cat,name:n,col:COLS[i%COLS.length]})})});
-<<<<<<< HEAD
 var EXTS=['png','jpg','jpeg','PNG','JPG','JPEG','webp','gif','avif','heic','HEIC'];
-=======
-var EXTS=['png','jpg','jpeg','PNG','JPG','JPEG','webp','WEBP'];
->>>>>>> 3c75e5a41ead32dd76eae8e85acddc04e6db5a53
 var cats=['Graphics','Photography','UI Concepts'],on={};
 var grid=document.getElementById('grid'),fl=document.getElementById('filters'),lb=document.getElementById('lb');
 
 function loadImg(box,g){
-<<<<<<< HEAD
   var cap=g.name.charAt(0).toUpperCase()+g.name.slice(1),c=[];
   IMG_DIRS.forEach(function(d){[g.name,cap].forEach(function(nm){EXTS.forEach(function(x){c.push(encodeURI(d+nm+'.'+x))})})});
   var i=0,im=document.createElement('img');im.alt=g.t;
@@ -31,12 +22,6 @@ function loadImg(box,g){
     if(i<c.length){im.src=c[i]}
     else{im.remove();var m=document.createElement('small');m.className='miss';m.textContent='not found: '+IMG_DIRS[0]+g.name;box.appendChild(m)}
   };
-=======
-  var c=[];IMG_DIRS.forEach(function(d){EXTS.forEach(function(x){c.push(encodeURI(d+g.name+'.'+x))})});
-  var i=0,im=document.createElement('img');im.alt=g.t;im.loading='lazy';
-  im.onload=function(){box.classList.add('has-img')};
-  im.onerror=function(){i++;if(i<c.length){im.src=c[i]}else{im.remove()}};
->>>>>>> 3c75e5a41ead32dd76eae8e85acddc04e6db5a53
   im.src=c[0];box.appendChild(im);
 }
 function openLB(src,alt){lb.innerHTML='';var im=new Image();im.src=src;im.alt=alt;lb.appendChild(im);lb.classList.add('on')}
