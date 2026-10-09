@@ -220,6 +220,10 @@ function loadProjImg(p,n,box){
   [p.pre+n,cap+n].forEach(function(nm){['png','jpg','jpeg','PNG','JPG','JPEG','webp'].forEach(function(x){c.push(encodeURI(IMG_ROOT+p.folder+'/'+nm+'.'+x))})});
   var i=0;
   im.onload=function(){IMG_OK[key]=im.src;if(box.isConnected)ok()};
+<<<<<<< HEAD
   im.onerror=function(){i++;if(i<c.length&&box.isConnected){im.src=c[i]}else if(i>=c.length){console.warn('Image not found: '+IMG_ROOT+p.folder+'/'+p.pre+n)}};
+=======
+  im.onerror=function(){i++;if(i<c.length&&box.isConnected){im.src=c[i]}};
+>>>>>>> 3c75e5a41ead32dd76eae8e85acddc04e6db5a53
   im.src=c[0];
 }
