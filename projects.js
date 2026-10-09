@@ -211,20 +211,48 @@ var P=[
 
 // Loads P[n] image (One/Two/Three) into a box; adds class has-img on success. Tries png/jpg/jpeg/webp and both name cases.
 var IMG_OK={};
+// images.js (optional, generated) lists real file paths so names never need guessing.
+function manifestMatch(p,n){
+  if(typeof IMAGE_LIST==='undefined'||!p.folder)return [];
+  var pre=(IMG_ROOT+p.folder+'/').toLowerCase();
+  var files=IMAGE_LIST.filter(function(f){return f.toLowerCase().indexOf(pre)===0}).sort();
+  var idx={One:0,Two:1,Three:2}[n],word=n.toLowerCase(),num=String(idx+1);
+  function base(f){return f.split('/').pop().replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9]/g,'')}
+  var exact=files.filter(function(f){return base(f)===p.pre.toLowerCase().replace(/[^a-z0-9]/g,'')+word});
+  var ends=files.filter(function(f){var b=base(f);return b.slice(-word.length)===word||b.slice(-1)===num});
+  var out=exact.concat(ends);
+  if(!out.length&&files[idx])out=[files[idx]];
+  return out.filter(function(f,i){return out.indexOf(f)===i});
+}
+function projImgCandidates(p,n){
+  var c=manifestMatch(p,n).map(function(f){return encodeURI(f)});
+  if(!p.folder)return c;
+  var cap=p.pre.charAt(0).toUpperCase()+p.pre.slice(1);
+  var dirs=[IMG_ROOT+p.folder+'/',p.folder+'/',IMG_ROOT+p.pre+'/'],names=[p.pre+n,cap+n,p.pre+' '+n,p.pre+'_'+n,p.pre+'-'+n],exts=['png','jpg','jpeg','PNG','JPG','JPEG','webp','gif','avif'];
+  dirs.forEach(function(d){names.forEach(function(nm){exts.forEach(function(x){c.push(encodeURI(d+nm+'.'+x))})})});
+  return c;
+}
+function folderFiles(p){
+  if(typeof IMAGE_LIST==='undefined'||!p.folder)return [];
+  var pre=(IMG_ROOT+p.folder+'/').toLowerCase();
+  return IMAGE_LIST.filter(function(f){return f.toLowerCase().indexOf(pre)===0}).map(function(f){return f.split('/').pop()});
+}
+function missingNote(p,n){
+  var have=folderFiles(p);
+  return 'not found: '+IMG_ROOT+p.folder+'/'+p.pre+n+(typeof IMAGE_LIST==='undefined'?'':(have.length?' (folder has: '+have.join(', ')+')':' (folder is empty on this site)'));
+}
 function loadProjImg(p,n,box){
   if(!p.folder){box.classList.add('soon');return}
-  var key=p.s+n,cap=p.pre.charAt(0).toUpperCase()+p.pre.slice(1),c=[];
+  var key=p.s+n,c=projImgCandidates(p,n);
   var im=new Image();im.className='pi';im.alt=p.n+' image '+n;
   function ok(){var m=box.querySelector('.miss');if(m)m.remove();box.insertBefore(im,box.firstChild);box.classList.add('has-img')}
   if(IMG_OK[key]){im.src=IMG_OK[key];ok();return}
-  var dirs=[IMG_ROOT+p.folder+'/',p.folder+'/',IMG_ROOT+p.pre+'/'],names=[p.pre+n,cap+n,p.pre+' '+n,p.pre+'_'+n,p.pre+'-'+n],exts=['png','jpg','jpeg','PNG','JPG','JPEG','webp','gif','avif'];
-  dirs.forEach(function(d){names.forEach(function(nm){exts.forEach(function(x){c.push(encodeURI(d+nm+'.'+x))})})});
   var i=0;
   im.onload=function(){IMG_OK[key]=im.src;if(box.isConnected)ok()};
   im.onerror=function(){
     i++;
     if(i<c.length&&box.isConnected){im.src=c[i];return}
-    if(box.isConnected&&!box.querySelector('.miss')){var m=document.createElement('small');m.className='miss';m.textContent='not found: '+IMG_ROOT+p.folder+'/'+p.pre+n;box.appendChild(m)}
+    if(box.isConnected&&!box.querySelector('.miss')){var m=document.createElement('small');m.className='miss';m.textContent=missingNote(p,n);box.appendChild(m)}
   };
   im.src=c[0];
 }

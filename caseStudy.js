@@ -19,17 +19,16 @@ root.innerHTML=
 
 // Load project images: tries png, jpg, jpeg, webp and both lowercase/Capitalized file names
 function shot(box,n){
-  var exts=['png','jpg','jpeg','webp','PNG','JPG','JPEG'],cap=p.pre.charAt(0).toUpperCase()+p.pre.slice(1);
-  var cand=[];
-  if(p.folder)[p.pre+n,cap+n].forEach(function(nm){exts.forEach(function(x){cand.push(IMG_ROOT+p.folder+'/'+nm+'.'+x)})});
-  var i=0,im=new Image();im.alt=p.n+' image '+n;
+  var cand=projImgCandidates(p,n),i=0,im=new Image();
+  im.alt=p.n+' image '+n;
   im.onload=function(){box.innerHTML='';box.appendChild(im)};
-  im.onerror=function(){i++;if(i<cand.length){im.src=encodeURI(cand[i])}else{empty()}};
+  im.onerror=function(){i++;if(i<cand.length){im.src=cand[i]}else{empty()}};
   function empty(){
     box.classList.add('empty');if(!p.folder)box.classList.add('soon');
     box.style.background='linear-gradient(135deg,'+p.col+','+p.col+'55)';
-    box.innerHTML='<span>'+(p.folder?p.pre+n+' not found':'coming soon')+'</span>';
+    box.innerHTML='<span></span>';
+    box.firstChild.textContent=p.folder?missingNote(p,n):'coming soon';
   }
-  if(cand.length){im.src=encodeURI(cand[0])}else{empty()}
+  if(cand.length){im.src=cand[0]}else{empty()}
 }
 document.querySelectorAll('.shot').forEach(function(b){shot(b,b.dataset.n)});
