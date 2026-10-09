@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Erika Neri | Work</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Modak&family=Nunito:wght@400;600;800;900&family=DM+Mono&display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="work.css">
+</head>
+<body>
+<nav><a class="h" href="home.html">@erikaneri</a><a class="on" href="work.html">work</a><a href="play.html">play</a><a href="about.html">about</a></nav>
+
+<div class="main">
+  <div class="bio">
+    <p>Twelve roles across brand, marketing and build, all with the same goal: make things feel a little more human and playful. Hover a role and read its case study.</p>
+    <a href="about.html">Read more</a>
+  </div>
+
+  <section class="wk-hero" id="wkhero" aria-label="Filter work by word">
+    <canvas id="dots"></canvas>
+    <div class="words">
+      <button data-f="Brand" style="--c:#ff4d6d">brand</button>
+      <button data-f="Marketing" style="--c:#00b4d8">marketing</button>
+      <button data-f="Build" style="--c:#2ec27e">build</button>
+    </div>
+    <span class="hint">Move your cursor through the dots. Click a word to filter.</span>
+  </section>
+
+  <div class="bar" id="work">
+    <span>DIRECTORY <span id="count"></span></span>
+    <span class="f" id="filters"></span>
+    <span class="sun">☀<input type="range" id="sun" min="0" max="100" value="20" aria-label="Background warmth"></span>
+  </div>
+
+  <ul class="dir" id="dir"></ul>
+  <div class="stage" id="stage"></div>
+  <div class="side" id="side"></div>
+</div>
+<div class="cs-cursor" id="csCursor" aria-hidden="true">Read case study ↗</div>
+<script src="projects.js"></script>
+<script src="work.js"></script>
+<script src="cursor.js"></script>
+<script src="footer.js"></script>
+</body>
+</html>
