@@ -4,6 +4,30 @@
 var IMG_ROOT="portfolio images/";
 var P=[
  {
+  s: "ot",
+  n: "Overture Global",
+  c: "Brand",
+  col: "#339af0",
+  r: "Freelance Graphic Designer",
+  y: "Oct 2026",
+  d: "Adapting key art for The Princess Diaries in Concert from a single PSD into about 20 formats for assorted placements, keeping the original quality across every layout.",
+  m: "~20 formats from one PSD",
+  folder: "ot web",
+  pre: "ot",
+  tools: "Photoshop, layout adaptation, print and digital placements",
+  b: [
+   "Resize and adapt one PSD of key art into about 20 formats for assorted placements.",
+   "Rework layouts where a format needs it, such as a vertical stack versus a horizontal stack, without losing the look of the original.",
+   "Keep the quality and branding consistent across every size, following a template from a previous project as a reference."
+  ],
+  st: [
+   ["~20", "formats from one PSD"],
+   ["Oct 2026", "project-based"]
+  ],
+  ch: "One piece of key art had to work in about 20 different placements, and a few of them needed real layout changes, not just scaling, while still looking like the original.",
+  rf: "This project is in progress. I will add what I learned once it is delivered."
+ },
+ {
   s: "shokuya",
   n: "Shokuya",
   c: "Marketing",
@@ -212,10 +236,15 @@ var P=[
 // Loads P[n] image (One/Two/Three) into a box; adds class has-img on success. Tries png/jpg/jpeg/webp and both name cases.
 var IMG_OK={};
 // images.js (optional, generated) lists real file paths so names never need guessing.
+// files whose path contains the project's folder name at any depth (works whether it sits inside "portfolio images" or at the top level)
+function inFolder(p){
+  if(typeof IMAGE_LIST==='undefined'||!p.folder)return [];
+  var key='/'+p.folder.toLowerCase()+'/';
+  return IMAGE_LIST.filter(function(f){return ('/'+f.toLowerCase()).indexOf(key)>-1});
+}
 function manifestMatch(p,n){
   if(typeof IMAGE_LIST==='undefined'||!p.folder)return [];
-  var pre=(IMG_ROOT+p.folder+'/').toLowerCase();
-  var files=IMAGE_LIST.filter(function(f){return f.toLowerCase().indexOf(pre)===0}).sort();
+  var files=inFolder(p).sort();
   var idx={One:0,Two:1,Three:2}[n],word=n.toLowerCase(),num=String(idx+1);
   function base(f){return f.split('/').pop().replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9]/g,'')}
   var exact=files.filter(function(f){return base(f)===p.pre.toLowerCase().replace(/[^a-z0-9]/g,'')+word});
@@ -232,11 +261,7 @@ function projImgCandidates(p,n){
   dirs.forEach(function(d){names.forEach(function(nm){exts.forEach(function(x){c.push(encodeURI(d+nm+'.'+x))})})});
   return c;
 }
-function folderFiles(p){
-  if(typeof IMAGE_LIST==='undefined'||!p.folder)return [];
-  var pre=(IMG_ROOT+p.folder+'/').toLowerCase();
-  return IMAGE_LIST.filter(function(f){return f.toLowerCase().indexOf(pre)===0}).map(function(f){return f.split('/').pop()});
-}
+function folderFiles(p){return inFolder(p).map(function(f){return f.split('/').pop()})}
 function missingNote(p,n){
   var have=folderFiles(p);
   return 'not found: '+IMG_ROOT+p.folder+'/'+p.pre+n+(typeof IMAGE_LIST==='undefined'?'':(have.length?' (folder has: '+have.join(', ')+')':' (folder is empty on this site)'));
